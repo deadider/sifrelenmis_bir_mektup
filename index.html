@@ -7,9 +7,9 @@
     <style>
         /* 🎨 RENK, TASARIM VE BOYUT AYARLARI */
         :root {
-            --arka-plan-gradient-1: rgba(0, 0, 0, 0.4); 
+            --arka-plan-gradient-1: rgba(0, 0, 0, 0.4); /* Fotoğrafın üstündeki karartma katmanı */
             --arka-plan-gradient-2: rgba(0, 0, 0, 0.4); 
-            --kart-arka-plani: rgba(255, 255, 255, 0.92); 
+            --kart-arka-plani: rgba(255, 255, 255, 0.92); /* Kutuyu hafif şeffaf yaptım, arkadaki görsel tatlı görünür */
             --ana-yazi-rengi: #4a4a4a;       
             --vurgu-rengi: #ff477e;          
             --sayac-rengi: #ff7096;          
@@ -18,22 +18,23 @@
             --mektup-yazi-rengi: #5c5c5c;    
 
             /* 📐 1. DIŞ KUTU BOYUTLARI (Mektup ve Sayacın İçinde Durduğu Beyaz Kart) */
-            --kart-maksimum-genislik: 380px; /* Kartın telefondaki genişliği (Örn: 350px - 450px arası yapabilirsin) */
+            --kart-maksimum-genislik: 380px; /* Kartın telefondaki genişliği */
             --kart-ic-bosluk: 30px;          /* Kutunun içindeki öğelerin kenarlara olan uzaklığı */
             --kart-yuvarlaklik: 20px;        /* Dış kutunun köşelerinin ovalliği */
 
             /* ✉️ 2. MEKTUP YAZI ALANI BOYUTLARI (Sadece Mektup Kağıdının Boyutları) */
             --mektup-yukseklik: 250px;       /* Mektup alanının dikine uzunluğu. Yazın uzunsa bunu arttırabilirsin */
             --mektup-ic-bosluk: 20px;        /* Yazının mektup kağıdının kenarlarına olan uzaklığı */
-            --mektup-yazi-boyutu: 1rem;      /* Yazıların büyüklüğü (Daha küçük için 0.9rem, büyük için 1.1rem) */
-            --mektup-satir-araligi: 1.6;     /* Satırların birbirine olan mesafesi (1.4 ile 1.8 arası idealdir) */
+            --mektup-yazi-boyutu: 1rem;      /* Yazıların büyüklüğü */
+            --mektup-satir-araligi: 1.6;     /* Satırların birbirine olan mesafesi */
             --mektup-yuvarlaklik: 12px;      /* Mektup kağıdının köşelerinin ovalliği */
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* 📸 YÜKLEDİĞİN DIKEY GÖRSEL ENTEGRE EDİLDİ */
             background: linear-gradient(var(--arka-plan-gradient-1), var(--arka-plan-gradient-2)), 
-                        url('arka-plan.jpg') no-repeat center center fixed;
+                        url('efe_piraye_arka_plan.png') no-repeat center center fixed;
             background-size: cover; 
             height: 100vh;
             display: flex;
@@ -100,74 +101,4 @@
             line-height: var(--mektup-satir-araligi); 
             font-style: italic;
             font-size: var(--mektup-yazi-boyutu); 
-            color: var(--mektup-yazi-rengi);
-            white-space: pre-line;
-            max-height: var(--mektup-yukseklik); 
-            overflow-y: auto;  /* Yazı belirlediğin yükseklikten uzun olursa otomatik kaydırma çubuğu çıkar */
-        }
-
-        @keyframes hafifSalla {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-4px) rotate(2deg); }
-        }
-
-        @keyframes yukariDogruAcil {
-            from { opacity: 0; transform: translateY(30px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <!-- Zaman Dolmadan Önce Görünecek Kısım -->
-    <div id="kilitli-alan">
-        <div class="kilit-ikonu">🔒</div>
-        <h1>Senin için bir mektup var...</h1>
-        <p>Ama henüz okuma zamanı gelmedi. Lütfen geri sayımın bitmesini bekle sevgilim.</p>
-        <div id="sayac">00:00:00</div>
-    </div>
-
-    <!-- Zaman Dolduğunda Açılacak Kısım -->
-    <div id="mektup-alani">
-        <div class="kilit-ikonu" style="animation: hafifSalla 1s infinite alternate;">❤️</div>
-        <h1>Sonunda Zamanı Geldi!</h1>
-        <div class="mktup-kapsayici" style="margin-top: 20px;">
-            <div class="mektup">
-                Buraya sevgiline yazmak istediğin o güzel, romantik mektubu yazacaksın... 
-                
-                Satır başı yaparak dilediğin kadar uzun yazabilirsin. GitHub'a yüklemeden önce bu metni değiştirmeyi unutma!
-                
-                Seni çok seviyorum.
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    // SAAT AYARI (22 Mayıs 2026, Saat 21:00)
-    const hedefZaman = new Date(2026, 4, 22, 21, 0, 0).getTime();
-
-    const sayacGuncelle = setInterval(function() {
-        const simdi = new Date().getTime();
-        const kalanSure = hedefZaman - simdi;
-
-        const saat = Math.floor((kalanSure % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const dakika = Math.floor((kalanSure % (1000 * 60 * 60)) / (1000 * 60));
-        const saniye = Math.floor((kalanSure % (1000 * 60)) / 1000);
-
-        document.getElementById("sayac").innerHTML = 
-            (saat < 10 ? "0" : "") + saat + ":" + 
-            (dakika < 10 ? "0" : "") + dakika + ":" + 
-            (saniye < 10 ? "0" : "") + saniye;
-
-        if (kalanSure < 0) {
-            clearInterval(sayacGuncelle);
-            document.getElementById("kilitli-alan").style.display = "none";
-            document.getElementById("mektup-alani").style.display = "block";
-        }
-    }, 1000);
-</script>
-
-</body>
-</html>
+            color: var(--mektup-yazi-reng
