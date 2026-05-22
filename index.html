@@ -32,8 +32,9 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* 🔗 ARKA PLAN GÖRSELİ SUNUCU LİNKİ */
             background: linear-gradient(var(--arka-plan-gradient-1), var(--arka-plan-gradient-2)), 
-                        url('efe_piraye_arka_plan.png') no-repeat center center fixed;
+                        url('https://raw.githubusercontent.com/deadider/sifrelenmis_bir_mektup/main/efe_piraye_arka_plan.png') no-repeat center center fixed;
             background-size: cover; 
             height: 100vh;
             display: flex;
@@ -55,7 +56,7 @@
             backdrop-filter: blur(5px); 
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-sizing: border-box;
-            display: block !important; /* Kutunun her durumda görünmesini garanti altına alıyoruz */
+            display: block !important;
         }
 
         h1 {
@@ -146,8 +147,8 @@
 </div>
 
 <script>
-    // ⏱️ TEST SÜRESİ: 22 Mayıs 2026 - Saat tam 11:45:00 (Yıl, Ay[4=Mayıs], Gün, Saat, Dakika, Saniye)
-    const hedefZaman = new Date(2026, 4, 22, 11, 45, 0).getTime();
+    // ⏱️ S SÜRPRİZ ZAMANI SABİTLENDİ: 22 Mayıs 2026 - Akşam tam saat 19:30:00
+    const hedefZaman = new Date(2026, 4, 22, 19, 30, 0).getTime();
 
     const sayacGuncelle = setInterval(function() {
         const simdi = new Date().getTime();
@@ -157,7 +158,6 @@
         const dakika = Math.floor((kalanSure % (1000 * 60 * 60)) / (1000 * 60));
         const saniye = Math.floor((kalanSure % (1000 * 60)) / 1000);
 
-        // Zaman henüz dolmadıysa sayacı güncelle
         if (kalanSure >= 0) {
             document.getElementById("sayac").innerHTML = 
                 (saat < 10 ? "0" : "") + saat + ":" + 
@@ -165,9 +165,13 @@
                 (saniye < 10 ? "0" : "") + saniye;
         }
 
-        // Geri sayım bittiğinde çalışacak kesin komutlar
-        if (kalanSure < 0) {
+        if (kalanSure <= 0) {
             clearInterval(sayacGuncelle);
             document.getElementById("kilitli-alan").style.display = "none";
             document.getElementById("mektup-alani").style.display = "block";
         }
+    }, 1000);
+</script>
+
+</body>
+</html>
