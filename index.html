@@ -9,7 +9,7 @@
         :root {
             --arka-plan-gradient-1: rgba(0, 0, 0, 0.4); 
             --arka-plan-gradient-2: rgba(0, 0, 0, 0.4); 
-            --kart-arka-plani: rgba(255, 255, 255, 0.92); 
+            --kart-arka-plani: rgba(255, 255, 255, 0.95); 
             --ana-yazi-rengi: #4a4a4a;       
             --vurgu-rengi: #ff477e;          
             --sayac-rengi: #ff7096;          
@@ -17,12 +17,12 @@
             --mektup-sol-cizgi: #ff477e;     
             --mektup-yazi-rengi: #5c5c5c;    
 
-            /* 📐 1. DIŞ KUTU BOYUTLARI */
+            /* 📐 DIŞ KUTU BOYUTLARI */
             --kart-maksimum-genislik: 380px; 
             --kart-ic-bosluk: 30px;          
             --kart-yuvarlaklik: 20px;        
 
-            /* ✉️ 2. MEKTUP YAZI ALANI BOYUTLARI */
+            /* ✉️ MEKTUP YAZI ALANI BOYUTLARI */
             --mektup-yukseklik: 250px;       
             --mektup-ic-bosluk: 20px;        
             --mektup-yazi-boyutu: 1rem;      
@@ -55,6 +55,7 @@
             backdrop-filter: blur(5px); 
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-sizing: border-box;
+            display: block !important; /* Kutunun her durumda görünmesini garanti altına alıyoruz */
         }
 
         h1 {
@@ -82,6 +83,10 @@
             margin-bottom: 10px;
             display: inline-block;
             animation: hafifSalla 2s infinite ease-in-out; 
+        }
+
+        #kilitli-alan {
+            display: block;
         }
 
         #mektup-alani {
@@ -128,7 +133,7 @@
     <div id="mektup-alani">
         <div class="kilit-ikonu" style="animation: hafifSalla 1s infinite alternate;">❤️</div>
         <h1>Sonunda Zamanı Geldi!</h1>
-        <div class="mktup-kapsayici" style="margin-top: 20px;">
+        <div style="margin-top: 20px;">
             <div class="mektup">
                 Buraya sevgiline yazmak istediğin o güzel, romantik mektubu yazacaksın... 
                 
@@ -141,11 +146,28 @@
 </div>
 
 <script>
-    // ⏱️ TEST İÇİN SÜRE AYARLANDI: 22 Mayıs 2026 - Saat 11:03:00
-    const hedefZaman = new Date(2026, 4, 22, 11, 3, 0).getTime();
+    // ⏱️ TEST SÜRESİ: 22 Mayıs 2026 - Saat tam 11:45:00 (Yıl, Ay[4=Mayıs], Gün, Saat, Dakika, Saniye)
+    const hedefZaman = new Date(2026, 4, 22, 11, 45, 0).getTime();
 
     const sayacGuncelle = setInterval(function() {
         const simdi = new Date().getTime();
         const kalanSure = hedefZaman - simdi;
 
-        const saat = Math.floor((kalanSure % (1000 * 60 * 60 *
+        const saat = Math.floor((kalanSure % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const dakika = Math.floor((kalanSure % (1000 * 60 * 60)) / (1000 * 60));
+        const saniye = Math.floor((kalanSure % (1000 * 60)) / 1000);
+
+        // Zaman henüz dolmadıysa sayacı güncelle
+        if (kalanSure >= 0) {
+            document.getElementById("sayac").innerHTML = 
+                (saat < 10 ? "0" : "") + saat + ":" + 
+                (dakika < 10 ? "0" : "") + dakika + ":" + 
+                (saniye < 10 ? "0" : "") + saniye;
+        }
+
+        // Geri sayım bittiğinde çalışacak kesin komutlar
+        if (kalanSure < 0) {
+            clearInterval(sayacGuncelle);
+            document.getElementById("kilitli-alan").style.display = "none";
+            document.getElementById("mektup-alani").style.display = "block";
+        }
